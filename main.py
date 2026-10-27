@@ -55,3 +55,4 @@ def predict_price(house: HouseFeatures):
         "currency": "USD",
         "note": "Estimated median value from the California Housing dataset."
     }
+from huggingface_hub import hf_hub_download
