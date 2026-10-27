@@ -1,12 +1,16 @@
-from pathlib import Path
-
+import os
 import joblib
 import pandas as pd
+from pathlib import Path
+from huggingface_hub import hf_hub_download
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
-BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "house_price_model.pkl"
+MODEL_PATH = hf_hub_download(
+    repo_id="namrathabuilds/house_price_prediction",
+    filename="house_price_model.pkl",
+    repo_type="model"
+)
 
 model = joblib.load(MODEL_PATH)
 
@@ -43,7 +47,6 @@ def predict_price(house: HouseFeatures):
         [house.model_dump()],
         columns=model.feature_names_in_
     )
-
     prediction = float(model.predict(features)[0])
 
     return {
